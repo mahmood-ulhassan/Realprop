@@ -16,10 +16,8 @@ async function createUser(req, res) {
 
     const userRole = role || "manager";
 
-    // If user is a manager, projectId is required
-    if (userRole === "manager" && !projectId) {
-      return res.status(400).json({ message: "projectId is required for manager role" });
-    }
+    // If user is a manager, projectId is optional (can be assigned later)
+    // Allow creating managers without projects initially
 
     // Validate projectId exists if provided
     if (projectId) {
@@ -161,11 +159,8 @@ async function updateUser(req, res) {
       user.role = role;
     }
 
-    // If role is manager, projectId is required
+    // Project assignment is optional for managers - can be assigned later
     const userRole = role || user.role;
-    if (userRole === "manager" && !projectId && user.projectIds.length === 0) {
-      return res.status(400).json({ message: "projectId is required for manager role" });
-    }
 
     // Update project assignment
     if (projectId !== undefined) {

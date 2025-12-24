@@ -52,10 +52,7 @@ function ProjectModal({ isOpen, onClose, project = null, managers = [], onSucces
       setError('Location is required');
       return;
     }
-    if (!formData.managerId) {
-      setError('Manager assignment is required');
-      return;
-    }
+    // Manager assignment is optional - can be assigned later
 
     setLoading(true);
 
@@ -140,16 +137,15 @@ function ProjectModal({ isOpen, onClose, project = null, managers = [], onSucces
           </div>
 
           <div className="form-group">
-            <label htmlFor="managerId">Assigned Manager *</label>
+            <label htmlFor="managerId">Assigned Manager (Optional)</label>
             <select
               id="managerId"
               name="managerId"
               value={formData.managerId}
               onChange={handleChange}
-              required
               disabled={loading}
             >
-              <option value="">Select a manager</option>
+              <option value="">No manager assigned (can assign later)</option>
               {managers.map(manager => (
                 <option key={manager._id} value={manager._id}>
                   {manager.name} ({manager.email})
@@ -157,7 +153,7 @@ function ProjectModal({ isOpen, onClose, project = null, managers = [], onSucces
               ))}
             </select>
             {managers.length === 0 && (
-              <p className="form-hint">No managers available. Please create a manager user first.</p>
+              <p className="form-hint">No managers available. You can create a manager user and assign them later.</p>
             )}
           </div>
 
@@ -173,7 +169,7 @@ function ProjectModal({ isOpen, onClose, project = null, managers = [], onSucces
             <button
               type="submit"
               className="btn-save"
-              disabled={loading || managers.length === 0}
+              disabled={loading}
             >
               {loading ? 'Saving...' : project ? 'Update' : 'Create'}
             </button>

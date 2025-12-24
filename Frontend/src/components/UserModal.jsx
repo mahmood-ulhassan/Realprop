@@ -59,10 +59,7 @@ function UserModal({ isOpen, onClose, user = null, projects = [], onSuccess }) {
       setError('Password is required for new users');
       return;
     }
-    if (formData.role === 'manager' && !formData.projectId) {
-      setError('Project assignment is required for managers');
-      return;
-    }
+    // Project assignment is optional for managers - can be assigned later
 
     setLoading(true);
 
@@ -171,22 +168,24 @@ function UserModal({ isOpen, onClose, user = null, projects = [], onSuccess }) {
 
           {formData.role === 'manager' && (
             <div className="form-group">
-              <label htmlFor="projectId">Assigned Project *</label>
+              <label htmlFor="projectId">Assigned Project (Optional)</label>
               <select
                 id="projectId"
                 name="projectId"
                 value={formData.projectId}
                 onChange={handleChange}
-                required
                 disabled={loading}
               >
-                <option value="">Select a project</option>
+                <option value="">No project assigned (can assign later)</option>
                 {projects.map(project => (
                   <option key={project._id} value={project._id}>
                     {project.name}
                   </option>
                 ))}
               </select>
+              {projects.length === 0 && (
+                <p className="form-hint">No projects available. You can create a project and assign it later.</p>
+              )}
             </div>
           )}
 

@@ -17,18 +17,17 @@ async function createProject(req, res) {
       return res.status(400).json({ message: "name and location are required" });
     }
 
-    if (!managerId) {
-      console.log("❌ Validation failed: managerId is required");
-      return res.status(400).json({ message: "managerId is required" });
-    }
-
-    // Validate manager exists and is a manager
-    const manager = await User.findById(managerId);
-    if (!manager) {
-      return res.status(400).json({ message: "Manager not found" });
-    }
-    if (manager.role !== "manager") {
-      return res.status(400).json({ message: "User is not a manager" });
+    // Manager assignment is optional - can be assigned later
+    let manager = null;
+    if (managerId) {
+      // Validate manager exists and is a manager
+      manager = await User.findById(managerId);
+      if (!manager) {
+        return res.status(400).json({ message: "Manager not found" });
+      }
+      if (manager.role !== "manager") {
+        return res.status(400).json({ message: "User is not a manager" });
+      }
     }
 
     // Create the project
@@ -39,15 +38,17 @@ async function createProject(req, res) {
       createdBy: req.user._id
     });
 
-    // Assign project to manager
-    if (!manager.projectIds) {
-      manager.projectIds = [];
+    // Assign project to manager if provided
+    if (manager) {
+      if (!manager.projectIds) {
+        manager.projectIds = [];
+      }
+      if (!manager.projectIds.includes(project._id)) {
+        manager.projectIds.push(project._id);
+      }
+      await manager.save();
+      console.log(`✅ Assigned project to manager: ${manager.email}`);
     }
-    if (!manager.projectIds.includes(project._id)) {
-      manager.projectIds.push(project._id);
-    }
-    await manager.save();
-    console.log(`✅ Assigned project to manager: ${manager.email}`);
 
     console.log("✅ Project created successfully:", project);
     return res.status(201).json(project);
