@@ -1,0 +1,103 @@
+/* Projects page uses the same layout as Dashboard */
+/* Projects-specific styles - inherits from Dashboard.css */
+
+/* Column widths - optimized for better fit */
+.col-name {
+  width: 20%;
+}
+
+.col-location {
+  width: 25%;
+}
+
+.col-manager {
+  width: 25%;
+}
+
+.col-created {
+  width: 15%;
+}
+
+.col-actions {
+  width: 15%;
+}
+
+/* Center align Created and Actions columns */
+.leads-table th.col-created,
+.leads-table td.col-created {
+  text-align: center;
+}
+
+.leads-table th.col-actions,
+.leads-table td.col-actions {
+  text-align: center;
+}
+
+.leads-table td.col-actions > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.36rem;
+  flex-wrap: nowrap;
+}
+
+.manager-name {
+  color: #374151;
+  font-weight: 500;
+}
+
+.no-manager {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Reduce padding in table cells for more compact layout */
+.leads-table td {
+  padding: 0.675rem 0.9rem;
+}
+
+.leads-table th {
+  padding: 0.675rem 0.9rem;
+}
+
+.btn-edit {
+  padding: 0.27rem 0.54rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 4.5px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.btn-delete {
+  padding: 0.27rem 0.54rem;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 4.5px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background-color: #fecaca;
+  border-color: #f87171;
+}
+
+.form-hint {
+  font-size: 0.72rem;
+  color: #6b7280;
+  margin-top: 0.36rem;
+  font-style: italic;
+}
+

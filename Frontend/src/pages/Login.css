@@ -1,0 +1,171 @@
+/* Main container - Light gray background */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 0.9rem;
+}
+
+/* Login form container - White card */
+.login-form {
+  background: white;
+  padding: 2.7rem 2.25rem;
+  border-radius: 7.2px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 378px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo Section */
+.logo-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.675rem;
+  margin-bottom: 0.45rem;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: flex-end;
+  gap: 3.6px;
+  height: 28.8px;
+}
+
+.logo-bar {
+  background-color: #2563eb;
+  border-radius: 1.8px;
+  width: 7.2px;
+}
+
+.logo-bar:nth-child(1) {
+  height: 14.4px;
+}
+
+.logo-bar:nth-child(2) {
+  height: 21.6px;
+}
+
+.logo-bar:nth-child(3) {
+  height: 28.8px;
+}
+
+.logo-text {
+  font-size: 1.575rem;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: -0.45px;
+}
+
+/* Subtitle */
+.subtitle {
+  color: #6b7280;
+  font-size: 0.7875rem;
+  margin: 0 0 1.8rem 0;
+  text-align: center;
+}
+
+/* Form group wrapper */
+.form-group {
+  width: 100%;
+  margin-bottom: 1.35rem;
+}
+
+/* Label styling */
+.form-group label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.7875rem;
+}
+
+/* Input field styling */
+.form-group input {
+  width: 100%;
+  padding: 0.675rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 5.4px;
+  font-size: 0.84375rem;
+  box-sizing: border-box;
+  background-color: white;
+  color: #111827;
+  transition: border-color 0.2s;
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f9fafb;
+}
+
+/* Submit button */
+.login-button {
+  width: 100%;
+  padding: 0.7875rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 5.4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.45rem;
+  transition: background-color 0.2s;
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.login-button:active:not(:disabled) {
+  background-color: #1e40af;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error message styling - Red text above button */
+.error-message {
+  color: #dc2626;
+  font-size: 0.7875rem;
+  margin-bottom: 0.9rem;
+  text-align: center;
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  display: block;
+  min-height: 20px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

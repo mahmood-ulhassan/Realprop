@@ -1,0 +1,5 @@
+/* UserModal uses the same styles as ContactModal */
+@import './ContactModal.css';
+
+/* Additional UserModal-specific overrides if needed */
+

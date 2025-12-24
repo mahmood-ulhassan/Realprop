@@ -1,0 +1,150 @@
+/* Users page uses the same layout as Dashboard */
+/* Users-specific styles - inherits from Dashboard.css */
+.search-input {
+  padding: 0.675rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 5.4px;
+  font-size: 0.84375rem;
+  background-color: white;
+  min-width: 250px;
+  flex: 1;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.role-filter {
+  padding: 0.675rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 5.4px;
+  font-size: 0.84375rem;
+  background-color: white;
+  cursor: pointer;
+  min-width: 135px;
+}
+
+.role-filter:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Column widths - optimized for better fit */
+.col-name {
+  width: 15%;
+}
+
+.col-email {
+  width: 22%;
+}
+
+.col-role {
+  width: 10%;
+}
+
+.col-projects {
+  width: 18%;
+}
+
+.col-created {
+  width: 12%;
+}
+
+.col-actions {
+  width: 23%;
+}
+
+/* Center align Role, Created, and Actions columns */
+.leads-table th.col-role,
+.leads-table td.col-role {
+  text-align: center;
+}
+
+.leads-table th.col-created,
+.leads-table td.col-created {
+  text-align: center;
+}
+
+.leads-table th.col-actions,
+.leads-table td.col-actions {
+  text-align: center;
+}
+
+.leads-table td.col-actions > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.36rem;
+  flex-wrap: nowrap;
+}
+
+/* Reduce padding in table cells for more compact layout */
+.leads-table td {
+  padding: 0.675rem 0.9rem;
+}
+
+.leads-table th {
+  padding: 0.675rem 0.9rem;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 0.27rem 0.675rem;
+  border-radius: 12.6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.role-badge.admin {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.role-badge.manager {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.btn-edit {
+  padding: 0.27rem 0.54rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 4.5px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.btn-delete {
+  padding: 0.27rem 0.54rem;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 4.5px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background-color: #fecaca;
+  border-color: #f87171;
+}
+
+.btn-delete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+

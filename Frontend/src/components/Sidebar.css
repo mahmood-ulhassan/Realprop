@@ -1,0 +1,140 @@
+.sidebar {
+  width: 216px;
+  height: 100vh;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+}
+
+.sidebar.sidebar-open {
+  transform: translateX(0);
+}
+
+.sidebar.sidebar-closed {
+  transform: translateX(-100%);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.675rem;
+  padding: 1.35rem 1.125rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: flex-end;
+  gap: 3.6px;
+  height: 21.6px;
+}
+
+.logo-bar {
+  background-color: #2563eb;
+  border-radius: 1.8px;
+  width: 5.4px;
+}
+
+.logo-bar:nth-child(1) {
+  height: 10.8px;
+}
+
+.logo-bar:nth-child(2) {
+  height: 16.2px;
+}
+
+.logo-bar:nth-child(3) {
+  height: 21.6px;
+}
+
+.logo-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #374151;
+  letter-spacing: -0.45px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 0.9rem 0;
+  overflow-y: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.675rem;
+  padding: 0.675rem 1.125rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin: 0.225rem 0.45rem;
+  border-radius: 5.4px;
+}
+
+.nav-item:hover {
+  background-color: #e9ecef;
+  color: #374151;
+}
+
+.nav-item.active {
+  background-color: #dbeafe;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.nav-icon {
+  font-size: 1.125rem;
+  width: 21.6px;
+  text-align: center;
+}
+
+.nav-label {
+  font-size: 0.84375rem;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.675rem;
+  padding: 0.9rem 1.125rem;
+  border-top: 1px solid #e9ecef;
+  background-color: #ffffff;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.7875rem;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 0.7875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.user-role {
+  font-size: 0.675rem;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
