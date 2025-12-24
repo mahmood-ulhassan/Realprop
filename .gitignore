@@ -19,6 +19,7 @@ build/
 .env.test.local
 .env.production.local
 .env*.local
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -39,6 +40,20 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.nyc_output
 
 # OS files
 .DS_Store
@@ -69,6 +84,9 @@ coverage/
 
 # Optional eslint cache
 .eslintcache
+
+# Optional stylelint cache
+.stylelintcache
 
 # Optional REPL history
 .node_repl_history
@@ -102,4 +120,3 @@ temp/
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
-
