@@ -11,6 +11,7 @@ function Sidebar({ isOpen = true }) {
     { path: '/dashboard', label: 'Dashboard', icon: '🏠', roles: ['admin', 'manager'] },
     { path: '/projects', label: 'Projects', icon: '📁', roles: ['admin'] },
     { path: '/users', label: 'Users', icon: '👥', roles: ['admin'] },
+    { path: '/inventory', label: 'Inventory', icon: '📦', roles: ['admin'] },
   ];
 
   // Filter menu items based on user role

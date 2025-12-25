@@ -37,7 +37,8 @@
   color: #374151;
 }
 
-.close-button {
+.close-button,
+.modal-close {
   background: none;
   border: none;
   font-size: 1.35rem;
@@ -48,7 +49,8 @@
   transition: color 0.2s;
 }
 
-.close-button:hover {
+.close-button:hover,
+.modal-close:hover {
   color: #374151;
 }
 
@@ -231,7 +233,8 @@
   border-top: 1px solid #e9ecef;
 }
 
-.cancel-button {
+.cancel-button,
+.btn-cancel {
   background-color: white;
   color: #374151;
   border: 1px solid #d1d5db;
@@ -243,11 +246,13 @@
   transition: background-color 0.2s;
 }
 
-.cancel-button:hover {
+.cancel-button:hover,
+.btn-cancel:hover {
   background-color: #f9fafb;
 }
 
-.save-button {
+.save-button,
+.btn-save {
   background-color: #2563eb;
   color: white;
   border: none;
@@ -259,11 +264,13 @@
   transition: background-color 0.2s;
 }
 
-.save-button:hover:not(:disabled) {
+.save-button:hover:not(:disabled),
+.btn-save:hover:not(:disabled) {
   background-color: #1d4ed8;
 }
 
-.save-button:disabled {
+.save-button:disabled,
+.btn-save:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

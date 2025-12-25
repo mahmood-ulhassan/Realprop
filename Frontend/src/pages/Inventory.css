@@ -1,0 +1,133 @@
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-size: 0.7875rem;
+  position: relative;
+}
+
+.inventory-table tbody {
+  position: relative;
+  z-index: 0;
+}
+
+.inventory-table thead {
+  background-color: #f9fafb;
+  position: relative;
+  z-index: 1;
+}
+
+.inventory-table th {
+  padding: 0.9rem 0.45rem;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e9ecef;
+  height: 48px;
+  position: relative;
+  overflow: visible;
+}
+
+.inventory-table td {
+  padding: 0.675rem 0.45rem;
+  text-align: center;
+  vertical-align: top;
+}
+
+.inventory-table .col-location {
+  width: 100px;
+}
+
+.inventory-table .col-type {
+  width: 90px;
+}
+
+.inventory-table .col-floor {
+  width: 80px;
+}
+
+.inventory-table .col-rent,
+.inventory-table .col-advance,
+.inventory-table .col-security,
+.inventory-table .col-commission {
+  width: 120px;
+}
+
+.inventory-table .col-reoffered {
+  width: 140px;
+}
+
+.inventory-table .col-notes {
+  width: 250px;
+  min-width: 200px;
+}
+
+.inventory-table .col-actions {
+  width: 150px;
+}
+
+/* Filter header styles */
+.inventory-table .filter-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.inventory-table .filter-header:hover {
+  background-color: #f3f4f6;
+}
+
+/* Ensure filter dropdowns are visible */
+.inventory-table .filter-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10000 !important;
+  min-width: 150px;
+  max-width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
+/* Override table-container overflow to show dropdowns */
+.table-container {
+  overflow: visible !important;
+}
+
+/* Small clear filters button */
+.clear-filters-btn-small {
+  background: none;
+  border: none;
+  color: #2563eb;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.75rem;
+  margin-left: 8px;
+  padding: 2px 4px;
+  font-weight: 400;
+}
+
+.clear-filters-btn-small:hover {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+/* Form row for side-by-side inputs */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+

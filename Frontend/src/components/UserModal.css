@@ -2,4 +2,16 @@
 @import './ContactModal.css';
 
 /* Additional UserModal-specific overrides if needed */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  margin-bottom: 1.35rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
 
