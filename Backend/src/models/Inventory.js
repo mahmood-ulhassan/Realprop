@@ -5,11 +5,17 @@ const inventorySchema = new mongoose.Schema(
     location: { type: String, required: true, trim: true },
     type: { type: String, required: true, trim: true },
     floor: { type: String, default: "", trim: true },
+    size: { type: Number, default: null },
+    sizeUnit: { type: String, default: "", enum: ["sq feet", "marla"], trim: true },
     rent: { type: Number, default: null },
     advance: { type: Number, default: null },
     security: { type: Number, default: null },
     commission: { type: Number, default: null },
     reofferedBy: { type: String, default: "", trim: true },
+    isRented: { type: Boolean, default: false },
+    rentComing: { type: Number, default: null },
+    agreementYears: { type: Number, default: null },
+    tenant: { type: String, default: "", trim: true },
     notes: [{
       text: { type: String, required: true, trim: true },
       addedBy: { 

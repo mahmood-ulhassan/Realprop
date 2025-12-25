@@ -4,7 +4,7 @@ const Inventory = require("../models/Inventory");
 async function createInventory(req, res) {
   try {
     console.log("📥 POST /inventory - Received body:", req.body);
-    const { location, type, floor, rent, advance, security, commission, reofferedBy, notes } = req.body;
+    const { location, type, floor, size, sizeUnit, rent, advance, security, commission, reofferedBy, isRented, rentComing, agreementYears, tenant, notes } = req.body;
 
     if (!location || !type) {
       console.log("❌ Validation failed: missing location or type");
@@ -25,11 +25,17 @@ async function createInventory(req, res) {
       location: location.trim(),
       type: type.trim(),
       floor: floor ? floor.trim() : "",
+      size: size || null,
+      sizeUnit: sizeUnit ? sizeUnit.trim() : "",
       rent: rent || null,
       advance: advance || null,
       security: security || null,
       commission: commission || null,
       reofferedBy: reofferedBy ? reofferedBy.trim() : "",
+      isRented: isRented || false,
+      rentComing: rentComing || null,
+      agreementYears: agreementYears || null,
+      tenant: tenant ? tenant.trim() : "",
       notes: notesArray
     });
 
@@ -84,7 +90,7 @@ async function getInventoryById(req, res) {
 async function updateInventory(req, res) {
   try {
     console.log("📥 PUT /inventory/:id - Received body:", req.body);
-    const { location, type, floor, rent, advance, security, commission, reofferedBy, notes } = req.body;
+    const { location, type, floor, size, sizeUnit, rent, advance, security, commission, reofferedBy, isRented, rentComing, agreementYears, tenant, notes } = req.body;
     const inventoryId = req.params.id;
 
     const inventory = await Inventory.findById(inventoryId);
@@ -96,11 +102,17 @@ async function updateInventory(req, res) {
     if (location !== undefined) inventory.location = location.trim();
     if (type !== undefined) inventory.type = type.trim();
     if (floor !== undefined) inventory.floor = floor ? floor.trim() : "";
+    if (size !== undefined) inventory.size = size || null;
+    if (sizeUnit !== undefined) inventory.sizeUnit = sizeUnit ? sizeUnit.trim() : "";
     if (rent !== undefined) inventory.rent = rent || null;
     if (advance !== undefined) inventory.advance = advance || null;
     if (security !== undefined) inventory.security = security || null;
     if (commission !== undefined) inventory.commission = commission || null;
     if (reofferedBy !== undefined) inventory.reofferedBy = reofferedBy ? reofferedBy.trim() : "";
+    if (isRented !== undefined) inventory.isRented = isRented || false;
+    if (rentComing !== undefined) inventory.rentComing = rentComing || null;
+    if (agreementYears !== undefined) inventory.agreementYears = agreementYears || null;
+    if (tenant !== undefined) inventory.tenant = tenant ? tenant.trim() : "";
 
     // If notes is provided as a string (from initial notes field), add it to notes array if it doesn't exist
     if (notes !== undefined && notes.trim()) {

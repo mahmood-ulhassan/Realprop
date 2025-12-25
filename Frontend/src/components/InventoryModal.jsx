@@ -7,6 +7,8 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
     location: '',
     type: '',
     floor: '',
+    size: '',
+    sizeUnit: 'sq feet',
     rent: '',
     advance: '',
     security: '',
@@ -28,6 +30,11 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
   const [newType, setNewType] = useState('');
   const [newFloor, setNewFloor] = useState('');
   const [newReoffered, setNewReoffered] = useState('');
+  const [listingType, setListingType] = useState('rent'); // 'rent' or 'sale'
+  const [isRented, setIsRented] = useState('not-rented'); // 'rented' or 'not-rented'
+  const [rentComing, setRentComing] = useState('');
+  const [agreementYears, setAgreementYears] = useState('');
+  const [tenant, setTenant] = useState('');
 
   // Load options from localStorage on mount
   useEffect(() => {
@@ -53,10 +60,29 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
   useEffect(() => {
     if (item) {
       // Edit mode - populate form with item data
+      // Determine listing type: if security or advance exist, it's rent, otherwise sale
+      const isRent = item.security || item.advance;
+      setListingType(isRent ? 'rent' : 'sale');
+      
+      // Set rented status and related fields for sale items
+      if (!isRent) {
+        setIsRented(item.isRented ? 'rented' : 'not-rented');
+        setRentComing(item.rentComing || '');
+        setAgreementYears(item.agreementYears || '');
+        setTenant(item.tenant || '');
+      } else {
+        setIsRented('not-rented');
+        setRentComing('');
+        setAgreementYears('');
+        setTenant('');
+      }
+      
       setFormData({
         location: item.location || '',
         type: item.type || '',
         floor: item.floor || '',
+        size: item.size || '',
+        sizeUnit: item.sizeUnit || 'sq feet',
         rent: item.rent || '',
         advance: item.advance || '',
         security: item.security || '',
@@ -66,10 +92,17 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
       });
     } else {
       // Add mode - reset form
+      setListingType('rent'); // Default to rent
+      setIsRented('not-rented');
+      setRentComing('');
+      setAgreementYears('');
+      setTenant('');
       setFormData({
         location: '',
         type: '',
         floor: '',
+        size: '',
+        sizeUnit: 'sq feet',
         rent: '',
         advance: '',
         security: '',
@@ -219,11 +252,19 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
         location: formData.location.trim(),
         type: formData.type.trim() || undefined,
         floor: formData.floor.trim() || undefined,
-        rent: formData.rent ? parseFloat(formData.rent) : undefined,
-        advance: formData.advance ? parseFloat(formData.advance) : undefined,
-        security: formData.security ? parseFloat(formData.security) : undefined,
-        commission: formData.commission ? parseFloat(formData.commission) : undefined,
+        size: formData.size ? parseInt(formData.size) : undefined,
+        sizeUnit: formData.sizeUnit || undefined,
+        rent: formData.rent ? parseInt(formData.rent) : undefined,
+        // For sale, don't include advance and security
+        advance: listingType === 'sale' ? undefined : (formData.advance ? parseInt(formData.advance) : undefined),
+        security: listingType === 'sale' ? undefined : (formData.security ? parseInt(formData.security) : undefined),
+        commission: formData.commission ? parseInt(formData.commission) : undefined,
         reofferedBy: formData.reofferedBy.trim() || undefined,
+        // Sale-specific fields
+        isRented: listingType === 'sale' ? (isRented === 'rented') : undefined,
+        rentComing: listingType === 'sale' && isRented === 'rented' ? (rentComing ? parseInt(rentComing) : undefined) : undefined,
+        agreementYears: listingType === 'sale' && isRented === 'rented' ? (agreementYears ? parseInt(agreementYears) : undefined) : undefined,
+        tenant: listingType === 'sale' && isRented === 'rented' ? (tenant.trim() || undefined) : undefined,
         notes: formData.notes.trim() || undefined
       };
 
@@ -255,6 +296,58 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
 
         <form onSubmit={handleSubmit} className="modal-form">
           {error && <div className="error-message">{error}</div>}
+
+          {/* Rent/Sale Selector */}
+          <div className="form-group">
+            <label>Listing Type</label>
+            <div style={{ display: 'flex', gap: '0.9rem', marginTop: '0.45rem' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setListingType('rent');
+                  // Clear security and advance if switching to rent (they'll be enabled)
+                }}
+                style={{
+                  flex: 1,
+                  padding: '0.675rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  background: listingType === 'rent' ? '#2563eb' : 'white',
+                  color: listingType === 'rent' ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: listingType === 'rent' ? '600' : '400',
+                  transition: 'all 0.2s'
+                }}
+              >
+                Rent
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setListingType('sale');
+                  // Clear security and advance when switching to sale
+                  setFormData(prev => ({
+                    ...prev,
+                    security: '',
+                    advance: ''
+                  }));
+                }}
+                style={{
+                  flex: 1,
+                  padding: '0.675rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  background: listingType === 'sale' ? '#2563eb' : 'white',
+                  color: listingType === 'sale' ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: listingType === 'sale' ? '600' : '400',
+                  transition: 'all 0.2s'
+                }}
+              >
+                Sale
+              </button>
+            </div>
+          </div>
 
           <div className="form-group-with-button">
             <div className="form-group">
@@ -463,9 +556,40 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
             )}
           </div>
 
+          {/* Size Field */}
+          <div className="form-group" style={{ display: 'flex', gap: '0.9rem', alignItems: 'flex-end' }}>
+            <div style={{ flex: 2 }}>
+              <label htmlFor="size">Size</label>
+              <input
+                type="number"
+                id="size"
+                name="size"
+                value={formData.size}
+                onChange={handleChange}
+                placeholder="0"
+                min="0"
+                step="1"
+                disabled={loading}
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label htmlFor="sizeUnit" style={{ visibility: 'hidden' }}>Unit</label>
+              <select
+                id="sizeUnit"
+                name="sizeUnit"
+                value={formData.sizeUnit}
+                onChange={handleChange}
+                disabled={loading}
+              >
+                <option value="sq feet">sq feet</option>
+                <option value="marla">marla</option>
+              </select>
+            </div>
+          </div>
+
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="rent">Rent</label>
+              <label htmlFor="rent">{listingType === 'rent' ? 'Demand' : 'Price'}</label>
               <input
                 type="number"
                 id="rent"
@@ -474,7 +598,7 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
                 onChange={handleChange}
                 placeholder="0"
                 min="0"
-                step="0.01"
+                step="1"
                 disabled={loading}
               />
               {formData.rent && (
@@ -494,8 +618,8 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
                 onChange={handleChange}
                 placeholder="0"
                 min="0"
-                step="0.01"
-                disabled={loading}
+                step="1"
+                disabled={loading || listingType === 'sale'}
               />
               {formData.advance && (
                 <div style={{ fontSize: '0.73125rem', color: '#6b7280', marginTop: '0.225rem' }}>
@@ -516,8 +640,8 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
                 onChange={handleChange}
                 placeholder="0"
                 min="0"
-                step="0.01"
-                disabled={loading}
+                step="1"
+                disabled={loading || listingType === 'sale'}
               />
               {formData.security && (
                 <div style={{ fontSize: '0.73125rem', color: '#6b7280', marginTop: '0.225rem' }}>
@@ -536,7 +660,7 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
                 onChange={handleChange}
                 placeholder="0"
                 min="0"
-                step="0.01"
+                step="1"
                 disabled={loading}
               />
               {formData.commission && (
@@ -546,6 +670,108 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
               )}
             </div>
           </div>
+
+          {/* Sale-specific fields: Rented/Not-rented */}
+          {listingType === 'sale' && (
+            <>
+              <div className="form-group">
+                <label>Property Status</label>
+                <div style={{ display: 'flex', gap: '0.9rem', marginTop: '0.45rem' }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsRented('not-rented');
+                      setRentComing('');
+                      setAgreementYears('');
+                      setTenant('');
+                    }}
+                    style={{
+                      flex: 1,
+                      padding: '0.675rem',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      background: isRented === 'not-rented' ? '#2563eb' : 'white',
+                      color: isRented === 'not-rented' ? 'white' : '#374151',
+                      cursor: 'pointer',
+                      fontWeight: isRented === 'not-rented' ? '600' : '400',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    Not-rented
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsRented('rented')}
+                    style={{
+                      flex: 1,
+                      padding: '0.675rem',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      background: isRented === 'rented' ? '#2563eb' : 'white',
+                      color: isRented === 'rented' ? 'white' : '#374151',
+                      cursor: 'pointer',
+                      fontWeight: isRented === 'rented' ? '600' : '400',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    Rented
+                  </button>
+                </div>
+              </div>
+
+              {/* Show additional fields if Rented is selected */}
+              {isRented === 'rented' && (
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="rentComing">Rent Coming</label>
+                    <input
+                      type="number"
+                      id="rentComing"
+                      value={rentComing}
+                      onChange={(e) => setRentComing(e.target.value)}
+                      placeholder="0"
+                      min="0"
+                      step="1"
+                      disabled={loading}
+                    />
+                    {rentComing && (
+                      <div style={{ fontSize: '0.73125rem', color: '#6b7280', marginTop: '0.225rem' }}>
+                        {numberToWords(rentComing)}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="agreementYears">Agreement Years</label>
+                    <input
+                      type="number"
+                      id="agreementYears"
+                      value={agreementYears}
+                      onChange={(e) => setAgreementYears(e.target.value)}
+                      placeholder="0"
+                      min="0"
+                      step="1"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {isRented === 'rented' && (
+                <div className="form-group">
+                  <label htmlFor="tenant">Tenant (Optional)</label>
+                  <input
+                    type="text"
+                    id="tenant"
+                    value={tenant}
+                    onChange={(e) => setTenant(e.target.value)}
+                    placeholder="Enter tenant name"
+                    disabled={loading}
+                  />
+                </div>
+              )}
+            </>
+          )}
 
           <div className="form-group-with-button">
             <div className="form-group">

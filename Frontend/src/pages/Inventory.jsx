@@ -26,6 +26,7 @@ function Inventory() {
   const [showTypeFilter, setShowTypeFilter] = useState(false);
   const [showFloorFilter, setShowFloorFilter] = useState(false);
   const [showOfferedByFilter, setShowOfferedByFilter] = useState(false);
+  const [listingTypeFilter, setListingTypeFilter] = useState('rent'); // 'rent' or 'sale'
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -186,8 +187,20 @@ function Inventory() {
     }
   }, [showLocationFilter, showTypeFilter, showFloorFilter, showOfferedByFilter]);
 
+  // Helper function to determine if item is rent or sale
+  const isRentItem = (item) => {
+    return item.security || item.advance;
+  };
+
   // Filter inventory
   const filteredInventory = inventory.filter(item => {
+    // Listing type filter (rent/sale)
+    if (listingTypeFilter === 'rent') {
+      if (!isRentItem(item)) return false;
+    } else if (listingTypeFilter === 'sale') {
+      if (isRentItem(item)) return false;
+    }
+
     // Search filter
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
@@ -242,6 +255,43 @@ function Inventory() {
 
           {/* Action Buttons */}
           <div className="action-buttons">
+            {/* Rent/Sale Filter Toggle */}
+            <div style={{ display: 'flex', gap: '0.9rem', marginRight: 'auto' }}>
+              <button
+                type="button"
+                onClick={() => setListingTypeFilter('rent')}
+                style={{
+                  padding: '0.675rem 1.35rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  background: listingTypeFilter === 'rent' ? '#2563eb' : 'white',
+                  color: listingTypeFilter === 'rent' ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: listingTypeFilter === 'rent' ? '600' : '400',
+                  transition: 'all 0.2s',
+                  fontSize: '0.7875rem'
+                }}
+              >
+                Rent
+              </button>
+              <button
+                type="button"
+                onClick={() => setListingTypeFilter('sale')}
+                style={{
+                  padding: '0.675rem 1.35rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  background: listingTypeFilter === 'sale' ? '#2563eb' : 'white',
+                  color: listingTypeFilter === 'sale' ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: listingTypeFilter === 'sale' ? '600' : '400',
+                  transition: 'all 0.2s',
+                  fontSize: '0.7875rem'
+                }}
+              >
+                Sale
+              </button>
+            </div>
             <button className="btn-primary" onClick={handleAddItem}>
               Add New Item
             </button>
@@ -342,9 +392,10 @@ function Inventory() {
                       </div>
                     )}
                   </th>
-                  <th className="col-rent">Rent</th>
-                  <th className="col-advance">Advance</th>
-                  <th className="col-security">Security</th>
+                  <th className="col-size">Size</th>
+                  <th className="col-rent">{listingTypeFilter === 'sale' ? 'Demand' : 'Rent'}</th>
+                  <th className="col-advance">{listingTypeFilter === 'sale' ? 'Rent Coming' : 'Advance'}</th>
+                  <th className="col-security">{listingTypeFilter === 'sale' ? 'Contract Years' : 'Security'}</th>
                   <th className="col-commission">Commission</th>
                   <th className="col-reoffered filter-header" onClick={() => setShowOfferedByFilter(!showOfferedByFilter)}>
                     Offered by <span className="sort-icon">⇅</span>
@@ -369,6 +420,7 @@ function Inventory() {
                       </div>
                     )}
                   </th>
+                  {listingTypeFilter === 'sale' && <th className="col-tenant">Tenant</th>}
                   <th className="col-notes">Notes</th>
                   <th className="col-actions">Actions</th>
                 </tr>
@@ -376,19 +428,35 @@ function Inventory() {
               <tbody>
                 {filteredInventory.length === 0 ? (
                   <tr>
-                    <td colSpan="10" className="no-data">No inventory items found</td>
+                    <td colSpan={listingTypeFilter === 'sale' ? 12 : 11} className="no-data">No inventory items found</td>
                   </tr>
                 ) : (
-                  filteredInventory.map((item) => (
-                    <tr key={item._id}>
-                      <td className="col-location">{item.location || '-'}</td>
-                      <td className="col-type">{item.type || '-'}</td>
-                      <td className="col-floor">{item.floor || '-'}</td>
-                      <td className="col-rent">{formatCurrency(item.rent)}</td>
-                      <td className="col-advance">{formatCurrency(item.advance)}</td>
-                      <td className="col-security">{formatCurrency(item.security)}</td>
-                      <td className="col-commission">{formatCurrency(item.commission)}</td>
-                      <td className="col-reoffered">{item.reofferedBy || '-'}</td>
+                  filteredInventory.map((item) => {
+                    const isRent = isRentItem(item);
+                    return (
+                      <tr key={item._id}>
+                        <td className="col-location">{item.location || '-'}</td>
+                        <td className="col-type">{item.type || '-'}</td>
+                        <td className="col-floor">{item.floor || '-'}</td>
+                        <td className="col-size">
+                          {item.size ? `${item.size} ${item.sizeUnit || 'sq feet'}` : '-'}
+                        </td>
+                        <td className="col-rent">{formatCurrency(item.rent)}</td>
+                        <td className="col-advance">
+                          {listingTypeFilter === 'sale' 
+                            ? formatCurrency(item.rentComing) 
+                            : formatCurrency(item.advance)}
+                        </td>
+                        <td className="col-security">
+                          {listingTypeFilter === 'sale' 
+                            ? (item.agreementYears ? item.agreementYears : 'N/A')
+                            : formatCurrency(item.security)}
+                        </td>
+                        <td className="col-commission">{formatCurrency(item.commission)}</td>
+                        <td className="col-reoffered">{item.reofferedBy || '-'}</td>
+                        {listingTypeFilter === 'sale' && (
+                          <td className="col-tenant">{item.tenant || '-'}</td>
+                        )}
                       <td 
                         className="col-notes"
                         onClick={() => {
@@ -435,7 +503,8 @@ function Inventory() {
                         </div>
                       </td>
                     </tr>
-                  ))
+                    );
+                  })
                 )}
               </tbody>
             </table>

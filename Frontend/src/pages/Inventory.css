@@ -47,6 +47,10 @@
   width: 80px;
 }
 
+.inventory-table .col-size {
+  width: 120px;
+}
+
 .inventory-table .col-rent,
 .inventory-table .col-advance,
 .inventory-table .col-security,
@@ -56,6 +60,10 @@
 
 .inventory-table .col-reoffered {
   width: 140px;
+}
+
+.inventory-table .col-tenant {
+  width: 120px;
 }
 
 .inventory-table .col-notes {
