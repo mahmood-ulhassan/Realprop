@@ -12,6 +12,7 @@ function Sidebar({ isOpen = true }) {
     { path: '/projects', label: 'Projects', icon: '📁', roles: ['admin'] },
     { path: '/users', label: 'Users', icon: '👥', roles: ['admin'] },
     { path: '/inventory', label: 'Inventory', icon: '📦', roles: ['admin'] },
+    { path: '/tasks', label: 'Tasks', icon: '✅', roles: ['admin', 'manager'] },
   ];
 
   // Filter menu items based on user role
@@ -41,6 +42,9 @@ function Sidebar({ isOpen = true }) {
           >
             <span className="nav-icon">{item.icon}</span>
             <span className="nav-label">{item.label}</span>
+            {item.badgeCount !== undefined && item.badgeCount > 0 && (
+              <span className="nav-badge">{item.badgeCount}</span>
+            )}
           </Link>
         ))}
       </nav>

@@ -1,13 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
+import notificationService from '../services/notificationService';
+import NotificationDropdown from './NotificationDropdown';
 import './Header.css';
 
 function Header({ onMenuClick, title = 'Dashboard', sidebarOpen = true }) {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const user = authService.getCurrentUser();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const notificationRef = useRef(null);
+
+  // Load unread notification count
+  useEffect(() => {
+    if (user) {
+      loadUnreadCount();
+      // Refresh count every 30 seconds
+      const interval = setInterval(loadUnreadCount, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -15,15 +30,27 @@ function Header({ onMenuClick, title = 'Dashboard', sidebarOpen = true }) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowUserDropdown(false);
       }
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotificationDropdown(false);
+      }
     };
 
-    if (showUserDropdown) {
+    if (showUserDropdown || showNotificationDropdown) {
       document.addEventListener('click', handleClickOutside);
       return () => {
         document.removeEventListener('click', handleClickOutside);
       };
     }
-  }, [showUserDropdown]);
+  }, [showUserDropdown, showNotificationDropdown]);
+
+  const loadUnreadCount = async () => {
+    try {
+      const count = await notificationService.getUnreadCount();
+      setUnreadCount(count);
+    } catch (err) {
+      console.error('Error loading unread count:', err);
+    }
+  };
 
   const handleLogout = () => {
     authService.logout();
@@ -43,9 +70,30 @@ function Header({ onMenuClick, title = 'Dashboard', sidebarOpen = true }) {
       </div>
       
       <div className="header-right">
-        <button className="notification-button">
-          🔔
-        </button>
+        <div className="notification-container" ref={notificationRef}>
+          <button 
+            className="notification-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowNotificationDropdown(!showNotificationDropdown);
+            }}
+          >
+            🔔
+            {unreadCount > 0 && (
+              <span className="notification-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>
+            )}
+          </button>
+          {showNotificationDropdown && (
+            <NotificationDropdown
+              isOpen={showNotificationDropdown}
+              user={user}
+              onClose={() => {
+                setShowNotificationDropdown(false);
+                loadUnreadCount(); // Refresh count after closing
+              }}
+            />
+          )}
+        </div>
         <div 
           className="user-menu" 
           onClick={() => setShowUserDropdown(!showUserDropdown)}

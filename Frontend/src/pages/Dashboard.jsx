@@ -4,11 +4,14 @@ import { authService } from '../services/authService';
 import { dashboardService } from '../services/dashboardService';
 import { leadService } from '../services/leadService';
 import { projectService } from '../services/projectService';
+import taskService from '../services/taskService';
+import { userService } from '../services/userService';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import ContactModal from '../components/ContactModal';
 import RemarksModal from '../components/RemarksModal';
 import RequirementModal from '../components/RequirementModal';
+import TaskModal from '../components/TaskModal';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -26,6 +29,10 @@ function Dashboard() {
   const [selectedLeadForRemarks, setSelectedLeadForRemarks] = useState(null);
   const [isRequirementModalOpen, setIsRequirementModalOpen] = useState(false);
   const [selectedLeadForRequirement, setSelectedLeadForRequirement] = useState(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [selectedLeadForTask, setSelectedLeadForTask] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
   const [statusFilter, setStatusFilter] = useState('');
   const [referredFilter, setReferredFilter] = useState('');
   const [leadSourceFilter, setLeadSourceFilter] = useState('');
@@ -59,6 +66,23 @@ function Dashboard() {
       // Load projects
       const projectsRes = await projectService.getProjects();
       setProjects(projectsRes.data);
+      
+      // Load tasks and users (for task creation)
+      if (currentUser.role === 'admin') {
+        const [tasksRes, usersRes] = await Promise.all([
+          taskService.getAll(),
+          userService.getUsers()
+        ]);
+        setTasks(tasksRes);
+        // Handle users response - check both .data and direct array
+        const usersArray = usersRes.data || usersRes;
+        setUsers(Array.isArray(usersArray) ? usersArray : []);
+        console.log('Dashboard: Loaded users:', usersArray.length, 'users');
+        console.log('Dashboard: Managers:', usersArray.filter(u => u && u.role && u.role.toLowerCase() === 'manager').length);
+      } else {
+        const tasksRes = await taskService.getAll();
+        setTasks(tasksRes);
+      }
       
       // For admin, select first project by default
       if (currentUser.role === 'admin' && projectsRes.data.length > 0) {
@@ -97,6 +121,15 @@ function Dashboard() {
     }
   };
 
+  const reloadTasks = async () => {
+    try {
+      const tasksRes = await taskService.getAll();
+      setTasks(tasksRes);
+    } catch (err) {
+      console.error('Error reloading tasks:', err);
+    }
+  };
+
   const handleProjectChange = async (e) => {
     const projectId = e.target.value;
     setSelectedProject(projectId);
@@ -117,6 +150,28 @@ function Dashboard() {
       loadMetrics(selectedProject, dateRange);
     }
   }, [dateRange, selectedProject]);
+
+  // Reload tasks when component becomes visible (e.g., user navigates back from Tasks page)
+  useEffect(() => {
+    if (!user) return;
+    
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        reloadTasks();
+      }
+    };
+
+    // Reload tasks when page becomes visible
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Also reload tasks when window gains focus (user switches back to tab)
+    window.addEventListener('focus', reloadTasks);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', reloadTasks);
+    };
+  }, [user]);
 
   // Close filter dropdowns when clicking outside
   useEffect(() => {
@@ -264,6 +319,26 @@ function Dashboard() {
     if (!lead.remarks || lead.remarks.length === 0) return '';
     const latest = lead.remarks[lead.remarks.length - 1];
     return latest.text || '';
+  };
+
+  const getLeadTask = (leadId) => {
+    return tasks.find(task => 
+      (task.leadId?._id === leadId || task.leadId === leadId) && 
+      task.status !== 'CLOSED' && 
+      task.status !== 'CANCELLED'
+    );
+  };
+
+  const handleCreateTask = (lead) => {
+    setSelectedLeadForTask(lead);
+    setIsTaskModalOpen(true);
+  };
+
+  const handleTaskIndicatorClick = (lead) => {
+    const task = getLeadTask(lead._id);
+    if (task) {
+      navigate(`/tasks?taskId=${task._id}`);
+    }
   };
 
   if (!user || loading) {
@@ -577,10 +652,41 @@ function Dashboard() {
                     <td colSpan="9" className="no-data">No leads found</td>
                   </tr>
                 ) : (
-                  filteredLeads.map((lead) => (
+                  filteredLeads.map((lead) => {
+                    const leadTask = getLeadTask(lead._id);
+                    return (
                     <tr key={lead._id}>
                       <td className="col-name">
-                        {lead.name}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', minWidth: 0 }}>
+                          {leadTask && (
+                            <span
+                              style={{
+                                background: '#2563eb',
+                                color: 'white',
+                                borderRadius: '50%',
+                                width: '18px',
+                                height: '18px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '0.675rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                flexShrink: 0
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleTaskIndicatorClick(lead);
+                              }}
+                              title="View Task"
+                            >
+                              T
+                            </span>
+                          )}
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>
+                            {lead.name}
+                          </span>
+                        </div>
                       </td>
                       <td className="col-contact">{lead.contactNo}</td>
                       <td 
@@ -617,15 +723,27 @@ function Dashboard() {
                       <td className="col-referred">{lead.referredBy || '-'}</td>
                       <td className="col-source">{lead.leadSource || '-'}</td>
                       <td className="col-actions">
-                        <button className="edit-button" onClick={() => {
-                          setEditingLead(lead);
-                          setIsModalOpen(true);
-                        }}>
-                          Edit
-                        </button>
+                        <div style={{ display: 'flex', gap: '0.45rem', justifyContent: 'center' }}>
+                          <button className="edit-button" onClick={() => {
+                            setEditingLead(lead);
+                            setIsModalOpen(true);
+                          }}>
+                            Edit
+                          </button>
+                          {user.role === 'admin' && (
+                            <button 
+                              className="edit-button" 
+                              onClick={() => handleCreateTask(lead)}
+                              style={{ fontSize: '0.675rem', padding: '0.225rem 0.45rem' }}
+                            >
+                              Task
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
-                  ))
+                  );
+                  })
                 )}
               </tbody>
             </table>
@@ -705,6 +823,30 @@ function Dashboard() {
         }}
         lead={selectedLeadForRequirement}
       />
+
+        {isTaskModalOpen && (
+          <TaskModal
+            isOpen={isTaskModalOpen}
+            onClose={() => {
+              setIsTaskModalOpen(false);
+              setSelectedLeadForTask(null);
+            }}
+            task={null}
+            users={users}
+            projects={projects}
+            onSuccess={async () => {
+              // Reload tasks and leads
+              const tasksRes = await taskService.getAll();
+              setTasks(tasksRes);
+              if (selectedProject) {
+                await loadLeads(selectedProject);
+              }
+            }}
+            initialLeadId={selectedLeadForTask?._id}
+            initialLeadContactNo={selectedLeadForTask?.contactNo}
+            tasksCount={tasks.length}
+          />
+        )}
     </div>
   );
 }

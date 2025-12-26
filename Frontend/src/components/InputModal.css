@@ -1,0 +1,120 @@
+.input-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  padding: 18px;
+}
+
+.input-modal-content {
+  background: white;
+  border-radius: 10.8px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.input-modal-header {
+  padding: 18px 21.6px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.input-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.input-modal-body {
+  padding: 21.6px;
+}
+
+.input-modal-body p {
+  margin: 0 0 14.4px 0;
+  font-size: 14.4px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.input-modal-input {
+  width: 100%;
+  padding: 9px 12.6px;
+  font-size: 14.4px;
+  color: #111827;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 5.4px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.input-modal-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-modal-input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.input-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  padding: 18px 21.6px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.input-modal-footer .btn-cancel {
+  padding: 8.1px 16.2px;
+  font-size: 14.4px;
+  font-weight: 500;
+  color: #374151;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 5.4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.input-modal-footer .btn-cancel:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.input-modal-footer .btn-primary {
+  padding: 8.1px 16.2px;
+  font-size: 14.4px;
+  font-weight: 500;
+  color: white;
+  background-color: #3b82f6;
+  border: 1px solid #3b82f6;
+  border-radius: 5.4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.input-modal-footer .btn-primary:hover:not(:disabled) {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.input-modal-footer .btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+

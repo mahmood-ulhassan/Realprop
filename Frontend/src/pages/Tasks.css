@@ -1,0 +1,164 @@
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.tasks-table thead {
+  background-color: #f9fafb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tasks-table thead tr {
+  height: 48px;
+  min-height: 48px;
+}
+
+.tasks-table th {
+  padding: 0.9rem 1.35rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.7875rem;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+  height: 48px;
+  min-height: 48px;
+  position: relative;
+  box-sizing: border-box;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.tasks-table td {
+  padding: 0.9rem 1.35rem;
+  text-align: center;
+  font-size: 0.7875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tasks-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.col-title {
+  width: 20%;
+  min-width: 180px;
+}
+
+.col-assigned {
+  width: 15%;
+  min-width: 120px;
+}
+
+.col-project {
+  width: 15%;
+  min-width: 120px;
+}
+
+.col-status {
+  width: 12%;
+  min-width: 100px;
+}
+
+.col-updated {
+  width: 12%;
+  min-width: 100px;
+}
+
+.col-actions {
+  width: 17%;
+  min-width: 150px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.225rem 0.675rem;
+  border-radius: 12px;
+  font-size: 0.675rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+}
+
+.filter-header {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.filter-header:hover {
+  background-color: #f3f4f6;
+}
+
+.sort-icon {
+  font-size: 0.675rem;
+  color: #9ca3af;
+  margin-left: 0.225rem;
+}
+
+.filter-indicator {
+  color: #3b82f6;
+  font-size: 0.675rem;
+  margin-left: 0.225rem;
+}
+
+.filter-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 10000 !important;
+  min-width: 150px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 0.225rem;
+}
+
+.filter-option {
+  padding: 0.675rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.7875rem;
+  color: #374151;
+  transition: background-color 0.15s;
+}
+
+.filter-option:hover {
+  background-color: #f3f4f6;
+}
+
+.filter-option.active {
+  background-color: #dbeafe;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.clear-filters-btn-small {
+  margin-left: 0.9rem;
+  padding: 0.225rem 0.675rem;
+  font-size: 0.675rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.clear-filters-btn-small:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2.25rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+

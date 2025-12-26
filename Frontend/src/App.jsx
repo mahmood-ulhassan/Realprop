@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import Projects from './pages/Projects';
 import Inventory from './pages/Inventory';
+import Tasks from './pages/Tasks';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -41,6 +42,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Inventory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks"
+          element={
+            <ProtectedRoute>
+              <Tasks />
             </ProtectedRoute>
           }
         />
