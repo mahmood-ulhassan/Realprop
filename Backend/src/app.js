@@ -24,6 +24,12 @@ app.use("/dashboard", dashboardRoutes);
 const inventoryRoutes = require("./routes/inventory.routes");
 app.use("/inventory", inventoryRoutes);
 
+const tasksRoutes = require("./routes/tasks.routes");
+app.use("/tasks", tasksRoutes);
+
+const notificationsRoutes = require("./routes/notifications.routes");
+app.use("/notifications", notificationsRoutes);
+
 // Quick test route
 app.get("/health", (req, res) => {
   res.json({ ok: true, service: "realprop-backend" });

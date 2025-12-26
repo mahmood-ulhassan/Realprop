@@ -16,6 +16,22 @@ async function start() {
     await mongoose.connect(MONGO_URI);
     console.log("✅ MongoDB connected");
 
+    // Drop the unique index on tasks.number if it exists (to allow reusing numbers from deleted tasks)
+    try {
+      const Task = mongoose.connection.collection('tasks');
+      const indexes = await Task.indexes();
+      const numberIndex = indexes.find(idx => idx.name === 'number_1');
+      if (numberIndex) {
+        await Task.dropIndex('number_1');
+        console.log("✅ Dropped unique index on tasks.number");
+      }
+    } catch (err) {
+      // Index might not exist, which is fine
+      if (err.code !== 27) { // 27 = IndexNotFound
+        console.log("⚠️ Could not drop index (may not exist):", err.message);
+      }
+    }
+
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`✅ Server running on port ${PORT}`);
     });
