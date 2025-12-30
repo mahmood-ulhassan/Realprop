@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { authService } from '../services/authService';
 import taskService from '../services/taskService';
-import './UserModal.css';
+import './TaskModal.css';
 
 function TaskModal({ isOpen, onClose, task = null, users = [], projects = [], onSuccess, initialLeadId = null, initialLeadContactNo = null, tasksCount = 0 }) {
   const [formData, setFormData] = useState({
@@ -157,8 +157,8 @@ function TaskModal({ isOpen, onClose, task = null, users = [], projects = [], on
   }, [isOpen, users, managers.length]);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay task-modal-overlay" onClick={onClose}>
+      <div className="modal-content task-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{task ? 'Edit Task' : 'Create Task'}</h2>
           <button className="modal-close" onClick={onClose}>×</button>
