@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { leadService } from '../services/leadService';
+import campaignsService from '../services/campaignsService';
 import { authService } from '../services/authService';
 import './RemarksModal.css';
 
@@ -69,10 +70,14 @@ function RemarksModal({ isOpen, onClose, lead }) {
     setError('');
 
     try {
-      const response = await leadService.addRemark(lead._id, newRemark.trim());
+      // Check if this is a campaign lead (has campaignId) or regular lead
+      const isCampaignLead = lead.campaignId !== undefined && lead.campaignId !== null;
+      const response = isCampaignLead 
+        ? await campaignsService.addRemark(lead._id, newRemark.trim())
+        : await leadService.addRemark(lead._id, newRemark.trim());
       
       // Update remarks list with the new remark
-      const updatedRemarks = response.data.remarks || [];
+      const updatedRemarks = (isCampaignLead ? response.remarks : response.data.remarks) || [];
       const sortedRemarks = [...updatedRemarks].sort((a, b) => {
         const dateA = new Date(a.timestamp || a.createdAt || 0);
         const dateB = new Date(b.timestamp || b.createdAt || 0);
@@ -136,7 +141,7 @@ function RemarksModal({ isOpen, onClose, lead }) {
                   {lead.status || 'New'}
                 </span>
               </div>
-              <p className="lead-contact">{lead.contactNo}</p>
+              <p className="lead-contact">{lead.contactNo || lead.phone || 'N/A'}</p>
             </div>
           </div>
 

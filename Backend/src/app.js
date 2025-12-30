@@ -1,5 +1,9 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
+
+// Load environment variables early (before routes are loaded)
+dotenv.config();
 
 const app = express();
 
@@ -29,6 +33,18 @@ app.use("/tasks", tasksRoutes);
 
 const notificationsRoutes = require("./routes/notifications.routes");
 app.use("/notifications", notificationsRoutes);
+
+const googlePlacesRoutes = require("./routes/googlePlaces.routes");
+app.use("/google-places", googlePlacesRoutes);
+
+const scraperRoutes = require("./routes/scraper.routes");
+app.use("/scraper", scraperRoutes);
+
+const campaignsRoutes = require("./routes/campaigns.routes");
+app.use("/campaigns", campaignsRoutes);
+
+const accountsRoutes = require("./routes/accounts.routes");
+app.use("/accounts", accountsRoutes);
 
 // Quick test route
 app.get("/health", (req, res) => {

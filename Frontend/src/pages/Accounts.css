@@ -1,0 +1,61 @@
+.accounts-container {
+  padding: 1.5rem;
+}
+
+.accounts-container .btn-primary {
+  padding: 0.675rem 3.35rem;
+}
+
+.accounts-container .btn-secondary {
+  padding: 0.675rem 3.35rem;
+  background-color: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 5.4px;
+  font-size: 0.84375rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: background-color 0.2s;
+}
+
+.accounts-container .btn-secondary:hover {
+  background-color: #f9fafb;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.35rem;
+  margin-bottom: 1.8rem;
+}
+
+@media (max-width: 1400px) {
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ensure filter dropdowns appear in front */
+.accounts-container .filter-dropdown {
+  z-index: 1000 !important;
+}
+
+.accounts-container .filter-header {
+  position: relative;
+}
+

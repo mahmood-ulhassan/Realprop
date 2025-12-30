@@ -7,6 +7,13 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
+// Debug: Check if Google Places API key is loaded
+if (process.env.GOOGLE_PLACES_API_KEY) {
+  console.log("✅ GOOGLE_PLACES_API_KEY loaded:", process.env.GOOGLE_PLACES_API_KEY.substring(0, 15) + "...");
+} else {
+  console.log("⚠️ GOOGLE_PLACES_API_KEY not found in environment variables");
+}
+
 async function start() {
   try {
     if (!MONGO_URI) {

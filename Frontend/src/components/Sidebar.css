@@ -102,17 +102,18 @@
 }
 
 .nav-badge {
-  background-color: #ef4444;
+  background-color: #2563eb;
   color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  border-radius: 103px;
+  min-width: 18px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.675rem;
   font-weight: 600;
   margin-left: auto;
+  padding: 0 4px;
 }
 
 .sidebar-user {
@@ -151,5 +152,50 @@
   font-size: 0.675rem;
   color: #6b7280;
   text-transform: capitalize;
+}
+
+.sub-menu {
+  margin-left: 1.125rem;
+  margin-top: 0.225rem;
+  margin-bottom: 0.45rem;
+}
+
+.sub-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.675rem;
+  padding: 0.45rem 1.125rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin: 0.1125rem 0.45rem;
+  border-radius: 5.4px;
+  font-size: 0.7875rem;
+}
+
+.sub-nav-item:hover {
+  background-color: #e9ecef;
+  color: #374151;
+}
+
+.sub-nav-item.active {
+  background-color: #dbeafe;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.sub-nav-label {
+  font-size: 0.7875rem;
+  flex: 1;
+}
+
+.nav-item.has-submenu {
+  position: relative;
+}
+
+.submenu-chevron {
+  font-size: 0.675rem;
+  color: #6b7280;
+  margin-left: auto;
 }
 

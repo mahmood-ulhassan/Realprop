@@ -5,6 +5,9 @@ import Users from './pages/Users';
 import Projects from './pages/Projects';
 import Inventory from './pages/Inventory';
 import Tasks from './pages/Tasks';
+import GenerateLeads from './pages/GenerateLeads';
+import Campaigns from './pages/Campaigns';
+import Accounts from './pages/Accounts';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -50,6 +53,30 @@ function App() {
           element={
             <ProtectedRoute>
               <Tasks />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/generate-leads"
+          element={
+            <ProtectedRoute>
+              <GenerateLeads />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/campaigns"
+          element={
+            <ProtectedRoute>
+              <Campaigns />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/accounts"
+          element={
+            <ProtectedRoute>
+              <Accounts />
             </ProtectedRoute>
           }
         />

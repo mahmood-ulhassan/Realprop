@@ -1,0 +1,239 @@
+.campaigns-container {
+  padding: 1.5rem;
+}
+
+.campaigns-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tab-button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.675rem 4.35rem;
+  border-radius: 5.4px;
+  font-size: 0.84375rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-right: 0.5rem;
+}
+
+.tab-button:hover {
+  background-color: #1d4ed8;
+}
+
+.tab-button.active {
+  background-color: #1d4ed8;
+  color: white;
+}
+
+.campaigns-tab-content,
+.leads-tab-content {
+  margin-top: 1.5rem;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.35rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.pagination-info {
+  font-size: 0.7875rem;
+  color: #6b7280;
+}
+
+.campaigns-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.campaigns-table thead {
+  background: #f8f9fa;
+}
+
+.campaigns-table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.campaigns-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.campaigns-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.btn-assign,
+.btn-delete {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.675rem 1.35rem;
+  border-radius: 5.4px;
+  font-size: 0.84375rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: background-color 0.2s;
+}
+
+.btn-assign:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-delete {
+  background-color: #ef4444;
+}
+
+.btn-delete:hover {
+  background-color: #dc2626;
+}
+
+.leads-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+}
+
+.filter-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.filter-group select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: white;
+  color: #374151;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.filter-group select:hover {
+  border-color: #2563eb;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.modal-content button {
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.modal-content button:hover {
+  background: #f8f9fa;
+}
+
+.leads-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.leads-table thead {
+  background: #f8f9fa;
+}
+
+.leads-table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.leads-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.leads-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.leads-table a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.leads-table a:hover {
+  text-decoration: underline;
+}
+
