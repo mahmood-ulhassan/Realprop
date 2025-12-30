@@ -203,8 +203,8 @@ function ContactModal({ isOpen, onClose, lead = null, projectId, onSuccess }) {
   const isRequirementRequired = formData.status === 'requirement';
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay contact-modal-overlay" onClick={onClose}>
+      <div className="modal-content contact-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{lead ? 'Edit Contact' : 'Add Contact'}</h2>
           <button className="close-button" onClick={onClose}>×</button>
@@ -242,6 +242,7 @@ function ContactModal({ isOpen, onClose, lead = null, projectId, onSuccess }) {
                   <option value="+44">+44</option>
                   <option value="+91">+91</option>
                   <option value="+971">+971</option>
+                  <option value="+966">+966</option>
                 </select>
                 <input
                   type="text"
