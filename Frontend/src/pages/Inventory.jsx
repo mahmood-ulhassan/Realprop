@@ -28,6 +28,7 @@ function Inventory() {
   const [showOfferedByFilter, setShowOfferedByFilter] = useState(false);
   const [listingTypeFilter, setListingTypeFilter] = useState('rent'); // 'rent' or 'sale'
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,6 +64,7 @@ function Inventory() {
   const handleEditItem = (item) => {
     setEditingItem(item);
     setIsModalOpen(true);
+    setOpenDropdownId(null);
   };
 
   const handleDeleteItem = async (itemId) => {
@@ -73,11 +75,124 @@ function Inventory() {
     try {
       await inventoryService.delete(itemId);
       await loadData();
+      setOpenDropdownId(null);
     } catch (err) {
       console.error('Error deleting item:', err);
       alert(err.response?.data?.message || 'Failed to delete item');
     }
   };
+
+  const handleCopyItem = async (item) => {
+    try {
+      // Determine if item is rent or sale (same logic as isRentItem)
+      const isRent = item.security || item.advance;
+      const listingType = isRent ? 'rent' : 'sale';
+      
+      // Build the formatted text
+      let formattedText = '';
+      
+      // Header
+      if (listingType === 'rent') {
+        formattedText += '*SHOP FOR RENT*\n\n';
+      } else {
+        formattedText += '*SHOP FOR SALE*\n\n';
+      }
+      
+      // Location
+      if (item.location) {
+        formattedText += `*LOCATION:* ${item.location}\n`;
+      }
+      
+      // Type
+      if (item.type) {
+        formattedText += `*TYPE:* ${item.type}\n`;
+      }
+      
+      // Floor
+      if (item.floor) {
+        formattedText += `*FLOOR:* ${item.floor}\n`;
+      }
+      
+      // Size - always include if size exists
+      if (item.size) {
+        const sizeUnit = item.sizeUnit || 'sq feet';
+        formattedText += `*SIZE:* ${item.size} ${sizeUnit}\n`;
+      }
+      
+      // Demand (rent field) - for rent items
+      if (listingType === 'rent' && item.rent) {
+        const formattedRent = new Intl.NumberFormat('en-US').format(item.rent);
+        formattedText += `*DEMAND:* PKR ${formattedRent}\n`;
+      }
+      
+      // For rent items: Security and Advance
+      if (listingType === 'rent') {
+        if (item.security) {
+          const formattedSecurity = new Intl.NumberFormat('en-US').format(item.security);
+          formattedText += `*SECURITY:* PKR ${formattedSecurity}\n`;
+        }
+        
+        if (item.advance) {
+          const formattedAdvance = new Intl.NumberFormat('en-US').format(item.advance);
+          formattedText += `*ADVANCE:* PKR ${formattedAdvance}\n`;
+        }
+      }
+      
+      // For sale items: Rented To, Rent Coming, Agreement Years
+      if (listingType === 'sale') {
+        if (item.rent) {
+          const formattedRent = new Intl.NumberFormat('en-US').format(item.rent);
+          formattedText += `*DEMAND:* PKR ${formattedRent}\n`;
+        }
+        
+        if (item.tenant) {
+          formattedText += `*RENTED TO:* ${item.tenant}\n`;
+        }
+        
+        if (item.rentComing) {
+          const formattedRentComing = new Intl.NumberFormat('en-US').format(item.rentComing);
+          formattedText += `*RENT COMING:* PKR ${formattedRentComing}\n`;
+        }
+        
+        if (item.agreementYears) {
+          formattedText += `*AGREEMENT YEARS:* ${item.agreementYears}\n`;
+        }
+      }
+      
+      // Copy to clipboard
+      await navigator.clipboard.writeText(formattedText);
+      
+      // Close dropdown
+      setOpenDropdownId(null);
+      
+      // Show success message (optional - you can remove this if you don't want it)
+      // You might want to add a toast notification here instead
+      console.log('Copied to clipboard:', formattedText);
+    } catch (err) {
+      console.error('Error copying to clipboard:', err);
+      alert('Failed to copy to clipboard');
+    }
+  };
+
+  const toggleDropdown = (itemId) => {
+    setOpenDropdownId(openDropdownId === itemId ? null : itemId);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.actions-dropdown-container')) {
+        setOpenDropdownId(null);
+      }
+    };
+
+    if (openDropdownId) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [openDropdownId]);
 
   const formatCurrency = (amount) => {
     if (!amount && amount !== 0) return 'N/A';
@@ -487,19 +602,37 @@ function Inventory() {
                           : 'Click to add note'}
                       </td>
                       <td className="col-actions">
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.36rem' }}>
+                        <div className="actions-dropdown-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.36rem', position: 'relative' }}>
                           <button
-                            className="btn-edit"
+                            className="btn-edit-primary"
                             onClick={() => handleEditItem(item)}
                           >
                             Edit
                           </button>
-                          <button
-                            className="btn-delete"
-                            onClick={() => handleDeleteItem(item._id)}
-                          >
-                            Delete
-                          </button>
+                          <div className="actions-dropdown" style={{ position: 'relative' }}>
+                            <button
+                              className="btn-dropdown-toggle"
+                              onClick={() => toggleDropdown(item._id)}
+                            >
+                              ⋮
+                            </button>
+                            {openDropdownId === item._id && (
+                              <div className="actions-dropdown-menu">
+                                <button
+                                  className="dropdown-item"
+                                  onClick={() => handleCopyItem(item)}
+                                >
+                                  Copy
+                                </button>
+                                <button
+                                  className="dropdown-item delete-item"
+                                  onClick={() => handleDeleteItem(item._id)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </td>
                     </tr>
