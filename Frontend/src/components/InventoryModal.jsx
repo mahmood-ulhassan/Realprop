@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './UserModal.css';
+import './InventoryModal.css';
 import inventoryService from '../services/inventoryService';
 
 function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
@@ -287,8 +287,8 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay inventory-modal-overlay" onClick={onClose}>
+      <div className="modal-content inventory-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{item ? 'Edit Inventory Item' : 'Add New Inventory Item'}</h2>
           <button className="modal-close" onClick={onClose}>×</button>
@@ -300,29 +300,20 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
           {/* Rent/Sale Selector */}
           <div className="form-group">
             <label>Listing Type</label>
-            <div style={{ display: 'flex', gap: '0.9rem', marginTop: '0.45rem' }}>
+            <div className="toggle-button-group" style={{ display: 'flex', gap: '0.9rem', marginTop: '0.45rem' }}>
               <button
                 type="button"
+                className={listingType === 'rent' ? 'toggle-button active' : 'toggle-button'}
                 onClick={() => {
                   setListingType('rent');
                   // Clear security and advance if switching to rent (they'll be enabled)
-                }}
-                style={{
-                  flex: 1,
-                  padding: '0.675rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '4px',
-                  background: listingType === 'rent' ? '#2563eb' : 'white',
-                  color: listingType === 'rent' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontWeight: listingType === 'rent' ? '600' : '400',
-                  transition: 'all 0.2s'
                 }}
               >
                 Rent
               </button>
               <button
                 type="button"
+                className={listingType === 'sale' ? 'toggle-button active' : 'toggle-button'}
                 onClick={() => {
                   setListingType('sale');
                   // Clear security and advance when switching to sale
@@ -331,17 +322,6 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
                     security: '',
                     advance: ''
                   }));
-                }}
-                style={{
-                  flex: 1,
-                  padding: '0.675rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '4px',
-                  background: listingType === 'sale' ? '#2563eb' : 'white',
-                  color: listingType === 'sale' ? 'white' : '#374151',
-                  cursor: 'pointer',
-                  fontWeight: listingType === 'sale' ? '600' : '400',
-                  transition: 'all 0.2s'
                 }}
               >
                 Sale
@@ -676,43 +656,23 @@ function InventoryModal({ isOpen, onClose, item = null, onSuccess }) {
             <>
               <div className="form-group">
                 <label>Property Status</label>
-                <div style={{ display: 'flex', gap: '0.9rem', marginTop: '0.45rem' }}>
+                <div className="toggle-button-group" style={{ display: 'flex', gap: '0.9rem', marginTop: '0.45rem' }}>
                   <button
                     type="button"
+                    className={isRented === 'not-rented' ? 'toggle-button active' : 'toggle-button'}
                     onClick={() => {
                       setIsRented('not-rented');
                       setRentComing('');
                       setAgreementYears('');
                       setTenant('');
                     }}
-                    style={{
-                      flex: 1,
-                      padding: '0.675rem',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '4px',
-                      background: isRented === 'not-rented' ? '#2563eb' : 'white',
-                      color: isRented === 'not-rented' ? 'white' : '#374151',
-                      cursor: 'pointer',
-                      fontWeight: isRented === 'not-rented' ? '600' : '400',
-                      transition: 'all 0.2s'
-                    }}
                   >
                     Not-rented
                   </button>
                   <button
                     type="button"
+                    className={isRented === 'rented' ? 'toggle-button active' : 'toggle-button'}
                     onClick={() => setIsRented('rented')}
-                    style={{
-                      flex: 1,
-                      padding: '0.675rem',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '4px',
-                      background: isRented === 'rented' ? '#2563eb' : 'white',
-                      color: isRented === 'rented' ? 'white' : '#374151',
-                      cursor: 'pointer',
-                      fontWeight: isRented === 'rented' ? '600' : '400',
-                      transition: 'all 0.2s'
-                    }}
                   >
                     Rented
                   </button>
