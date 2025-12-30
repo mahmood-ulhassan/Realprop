@@ -14,7 +14,7 @@
 
 3. **Verify Your API Key**
    - Go to "APIs & Services" > "Credentials"
-   - Find your API key: `AIzaSyC7Nkm5VBFLjYkqAhHuBOgMO3Zdz7g4YzE`
+   - Find your API key (it will look like: `AIzaSy...`)
    - Make sure it has access to "Places API (New)"
 
 4. **Restart Your Backend Server**
