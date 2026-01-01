@@ -243,6 +243,7 @@ function ContactModal({ isOpen, onClose, lead = null, projectId, onSuccess }) {
                   <option value="+91">+91</option>
                   <option value="+971">+971</option>
                   <option value="+966">+966</option>
+                  <option value="+60">+60</option>
                 </select>
                 <input
                   type="text"

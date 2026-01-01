@@ -311,3 +311,25 @@
   background: #94a3b8;
 }
 
+/* Mark Completed button styling - blue theme */
+.remarks-modal-content .btn-save {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.675rem 1.35rem;
+  border-radius: 5.4px;
+  font-size: 0.84375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remarks-modal-content .btn-save:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.remarks-modal-content .btn-save:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+

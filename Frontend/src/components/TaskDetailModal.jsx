@@ -253,7 +253,7 @@ function TaskDetailModal({ isOpen, onClose, task, onUpdate }) {
               <p className="lead-contact">
                 Assigned to: {taskData.assignedTo?.name || 'N/A'}
                 {taskData.projectId && ` • Project: ${taskData.projectId.name}`}
-                {taskData.leadId && ` • Lead: ${taskData.leadId.name}`}
+                {taskData.leadId && ` • Lead: ${taskData.leadId.contactNo || 'N/A'}`}
               </p>
               <p style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.15rem' }}>
                 Created by {taskData.createdBy?.name} on {formatDateTime(taskData.createdAt)}
